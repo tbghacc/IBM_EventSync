@@ -15,19 +15,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/events/:id/",
+							"raw": "{{base_url}}/events/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"events",
-								":id",
-								""
+								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "6a27896a-54c0-49a0-a527-8de1d7ca4824"
+									"value": ""
 								}
 							]
 						}
@@ -102,7 +101,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "77c42875-49cf-46a8-bf98-e1cc8af40e92"
+									"value": ""
 								}
 							]
 						}
@@ -135,7 +134,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "65c1ea80-2713-449d-82e8-fbeaa35c88f4"
+									"value": ""
 								}
 							]
 						}
@@ -146,7 +145,16 @@
 					"name": "Get Events",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/events",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events"
+							]
+						}
 					},
 					"response": []
 				}
@@ -162,7 +170,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"submitter\": \"Evil Me\",\r\n    \"feedback\": \"This event sucks! The host should be boiled alive!\"\r\n}",
+							"raw": "{\r\n    \"submitter\": \"Random Person\",\r\n    \"feedback\": \"I went to this event with my friend, and the host ate him. Nice!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -170,19 +178,19 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/events/:id/feedback",
+							"raw": "{{base_url}}/events/:eventid/feedback",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"events",
-								":id",
+								":eventid",
 								"feedback"
 							],
 							"variable": [
 								{
-									"key": "id",
-									"value": "18e81671-3d1d-4069-b280-92a13b8123dd"
+									"key": "eventid",
+									"value": ""
 								}
 							]
 						}
@@ -208,11 +216,11 @@
 							"variable": [
 								{
 									"key": "eventid",
-									"value": "6a27896a-54c0-49a0-a527-8de1d7ca4824"
+									"value": ""
 								},
 								{
 									"key": "feedbackid",
-									"value": "e253f1ce-5ab4-4e45-acb4-60c80da0bb68"
+									"value": ""
 								}
 							]
 						}
@@ -237,7 +245,7 @@
 							"variable": [
 								{
 									"key": "eventid",
-									"value": "6a27896a-54c0-49a0-a527-8de1d7ca4824"
+									"value": ""
 								}
 							]
 						}
