@@ -1,7 +1,9 @@
 package com.ibm.EventSync.repository;
 
+import com.ibm.EventSync.exception.EntityNotFoundException;
 import com.ibm.EventSync.model.Feedback;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -31,13 +33,19 @@ public class FeedbackRepository {
 
     public Feedback getFeedback(UUID eventId, UUID id) {
         String sql = "SELECT * FROM event_feedback WHERE ID = ? AND EVENT = ?";
-        Feedback feedback = jdbcTemplate.queryForObject(
-                sql,
-                feedbackRowMapper(),
-                id,
-                eventId
-        );
-        return feedback;
+
+        try {
+            Feedback feedback = jdbcTemplate.queryForObject(
+                    sql,
+                    feedbackRowMapper(),
+                    id,
+                    eventId
+            );
+            return feedback;
+        }
+        catch (EmptyResultDataAccessException e) {
+            throw(new EntityNotFoundException(String.format("Feedback with id: %s does not exist", id)));
+        }
     }
 
     public List<Feedback> getFeedbackByEvent(UUID eventid) {

@@ -1,7 +1,9 @@
 package com.ibm.EventSync.repository;
 
+import com.ibm.EventSync.exception.EntityNotFoundException;
 import com.ibm.EventSync.model.Event;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -30,12 +32,17 @@ public class EventRepository {
         String sql = "SELECT * FROM events WHERE ID = ?";
 
         // Query and map result to Event object
-        Event event = jdbcTemplate.queryForObject(
-                sql,
-                eventRowMapper(),
-                id
-        );
-        return event;
+        try {
+            Event event = jdbcTemplate.queryForObject(
+                    sql,
+                    eventRowMapper(),
+                    id
+            );
+            return event;
+        }
+        catch (EmptyResultDataAccessException e) {
+            throw(new EntityNotFoundException(String.format("Event with id: %s does not exist", id)));
+        }
     }
 
     public void insertEvent(Event event) {

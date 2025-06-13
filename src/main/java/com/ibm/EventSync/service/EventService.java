@@ -31,6 +31,8 @@ public class EventService {
     }
 
     public Event updateEvent(UUID id, EventDTO eventDto) {
+        eventRepository.getEvent(id); // This is a very dirty way to see if event exists
+
         Event event = Event.builder()
                 .id(id)
                 .title(eventDto.getTitle())
@@ -75,6 +77,9 @@ public class EventService {
     }
 
     public void deleteEventById(UUID id) {
+
+        eventRepository.getEvent(id);
+
         List<Feedback> eventFeedback = feedbackRepository.getFeedbackByEvent(id);
         for (Feedback feedback: eventFeedback){
             feedbackRepository.deleteFeedback(id,feedback.getId());

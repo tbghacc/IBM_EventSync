@@ -2,6 +2,7 @@ package com.ibm.EventSync.service;
 
 import com.ibm.EventSync.dto.FeedbackDTO;
 import com.ibm.EventSync.model.Feedback;
+import com.ibm.EventSync.repository.EventRepository;
 import com.ibm.EventSync.repository.FeedbackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,14 +19,17 @@ public class FeedbackService {
 
     private final String HF_URL = "https://router.huggingface.co/hf-inference/models/cardiffnlp/twitter-roberta-base-sentiment";
     private final FeedbackRepository feedbackRepository;
+    private final EventRepository eventRepository;
     @Value("${HF_TOKEN}")
     private String apiKey;
 
     public Feedback getFeedback(UUID eventId, UUID id) {
+        eventRepository.getEvent(eventId);
         return feedbackRepository.getFeedback(eventId, id);
     }
 
     public List<Feedback> getFeedbackByEvent(UUID eventid) {
+        eventRepository.getEvent(eventid);
         return feedbackRepository.getFeedbackByEvent(eventid);
     }
 
@@ -43,6 +47,8 @@ public class FeedbackService {
     }
 
     public void deleteFeedback(UUID eventId, UUID id){
+        eventRepository.getEvent(eventId);
+        feedbackRepository.getFeedback(eventId,id);
         feedbackRepository.deleteFeedback(eventId, id);
     }
 
