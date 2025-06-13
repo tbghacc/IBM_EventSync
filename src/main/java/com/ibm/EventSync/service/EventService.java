@@ -60,7 +60,8 @@ public class EventService {
             allNegative += feedback.getNegative();
         }
 
-
+        // Dominant sentiment
+        // Set the dominant sentiment, might be useful
         String ds = allNegative > allNeutral && allNegative > allPositive ? "Negative" :
                 allNeutral >= allNegative && allNeutral >= allPositive ? "Neutral" : "Positive";
 
