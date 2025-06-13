@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class Sentiment {
 
+    private String dominant_sentiment;
+    private String weighted_sentiment;
     private Double positive;
     private Double neutral;
     private Double negative;

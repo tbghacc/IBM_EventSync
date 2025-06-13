@@ -7,18 +7,18 @@ import org.springframework.http.HttpStatus;
 @Getter
 @Setter
 public abstract class MainException extends RuntimeException {
-  protected String title;
+    protected String title;
 
-  protected HttpStatus status;
+    protected HttpStatus status;
 
-  public MainException(String message) {
-    super(message);
-  }
+    public MainException(String message) {
+        super(message);
+    }
 
-  public MainException(String message, String title, HttpStatus status) {
-    super(message);
-    this.title = title;
-    this.status = status;
-  }
+    public MainException(String message, String title, HttpStatus status) {
+        super(message);
+        this.title = title;
+        this.status = status;
+    }
 }
 

@@ -39,9 +39,8 @@ public class EventRepository {
                     id
             );
             return event;
-        }
-        catch (EmptyResultDataAccessException e) {
-            throw(new EntityNotFoundException(String.format("Event with id: %s does not exist", id)));
+        } catch (EmptyResultDataAccessException e) {
+            throw (new EntityNotFoundException(String.format("Event with id: %s does not exist", id)));
         }
     }
 

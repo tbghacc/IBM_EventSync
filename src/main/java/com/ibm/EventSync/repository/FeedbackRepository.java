@@ -42,9 +42,8 @@ public class FeedbackRepository {
                     eventId
             );
             return feedback;
-        }
-        catch (EmptyResultDataAccessException e) {
-            throw(new EntityNotFoundException(String.format("Feedback with id: %s does not exist", id)));
+        } catch (EmptyResultDataAccessException e) {
+            throw (new EntityNotFoundException(String.format("Feedback with id: %s does not exist", id)));
         }
     }
 
@@ -84,7 +83,7 @@ public class FeedbackRepository {
         );
     }
 
-    public void deleteFeedback(UUID eventId,UUID id) {
+    public void deleteFeedback(UUID eventId, UUID id) {
         String sql = "DELETE FROM event_feedback WHERE ID = ? AND EVENT = ?";
         jdbcTemplate.update(
                 sql,

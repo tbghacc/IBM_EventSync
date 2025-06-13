@@ -1,6 +1,7 @@
 package com.ibm.EventSync.service;
 
 import com.ibm.EventSync.dto.EventDTO;
+import com.ibm.EventSync.exception.EntityNotFoundException;
 import com.ibm.EventSync.model.Event;
 import com.ibm.EventSync.model.Feedback;
 import com.ibm.EventSync.model.Sentiment;
@@ -46,23 +47,47 @@ public class EventService {
     // Also this is just more readable
     public Sentiment getEventSentiment(UUID id) {
         List<Feedback> eventFeedback = feedbackRepository.getFeedbackByEvent(id);
+        if (eventFeedback.isEmpty())
+            throw (new EntityNotFoundException(String.format("Event with id: %s has no feedback", id)));
 
-        double  allPositive = 0.0;
-        double  allNeutral = 0.0;
-        double  allNegative = 0.0;
+        double allPositive = 0.0;
+        double allNeutral = 0.0;
+        double allNegative = 0.0;
 
         for (Feedback feedback : eventFeedback) {
-            allPositive+= feedback.getPositive();
-            allNeutral+= feedback.getNeutral();
-            allNegative+= feedback.getNegative();
+            allPositive += feedback.getPositive();
+            allNeutral += feedback.getNeutral();
+            allNegative += feedback.getNegative();
         }
 
-        double feedbackAmount = eventFeedback.size();
 
+        String ds = allNegative > allNeutral && allNegative > allPositive ? "Negative" :
+                allNeutral >= allNegative && allNeutral >= allPositive ? "Neutral" : "Positive";
+
+
+        // /100 is there so when the values get divided they display as percentages
+        // This is basically the same as multiplying each sentiment value by 100
+        double feedbackAmount = eventFeedback.size() / 100.;
+
+        double positive = allPositive / feedbackAmount;
+        double neutral = allNeutral / feedbackAmount;
+        double negative = allNegative / feedbackAmount;
+
+        // Weighted sentiment
+        // This takes into account that an event might have 50 positive reviews and 49 negative
+        // In that situation it's probably more right to assume that the sentiment is more neutral
+        double weightedSentiment = (positive * 2) + neutral;
+
+        String ws = weightedSentiment <= 67 ? "Negative" :
+                weightedSentiment <= 134 ? "Neutral" : "Positive";
+
+        // Dominant sentiment is seperated for ease of use
         Sentiment sentiment = Sentiment.builder()
-                .positive(allPositive/feedbackAmount)
-                .neutral(allNeutral/feedbackAmount)
-                .negative(allNegative/feedbackAmount)
+                .dominant_sentiment(ds)
+                .weighted_sentiment(ws)
+                .positive(positive)
+                .neutral(neutral)
+                .negative(negative)
                 .build();
         return sentiment;
     }
@@ -81,8 +106,8 @@ public class EventService {
         eventRepository.getEvent(id);
 
         List<Feedback> eventFeedback = feedbackRepository.getFeedbackByEvent(id);
-        for (Feedback feedback: eventFeedback){
-            feedbackRepository.deleteFeedback(id,feedback.getId());
+        for (Feedback feedback : eventFeedback) {
+            feedbackRepository.deleteFeedback(id, feedback.getId());
         }
 
         eventRepository.deleteEventById(id);

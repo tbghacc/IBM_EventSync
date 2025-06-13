@@ -46,9 +46,9 @@ public class FeedbackService {
         return feedback;
     }
 
-    public void deleteFeedback(UUID eventId, UUID id){
+    public void deleteFeedback(UUID eventId, UUID id) {
         eventRepository.getEvent(eventId);
-        feedbackRepository.getFeedback(eventId,id);
+        feedbackRepository.getFeedback(eventId, id);
         feedbackRepository.deleteFeedback(eventId, id);
     }
 
@@ -70,7 +70,6 @@ public class FeedbackService {
         );
 
     }
-
 
 
     // HF returns the results in a weird format, this processes it into a simple map
