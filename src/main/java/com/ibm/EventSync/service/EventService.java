@@ -75,6 +75,11 @@ public class EventService {
     }
 
     public void deleteEventById(UUID id) {
+        List<Feedback> eventFeedback = feedbackRepository.getFeedbackByEvent(id);
+        for (Feedback feedback: eventFeedback){
+            feedbackRepository.deleteFeedback(id,feedback.getId());
+        }
+
         eventRepository.deleteEventById(id);
     }
 

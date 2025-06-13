@@ -21,8 +21,8 @@ public class FeedbackService {
     @Value("${HF_TOKEN}")
     private String apiKey;
 
-    public Feedback getFeedback(UUID id) {
-        return feedbackRepository.getFeedback(id);
+    public Feedback getFeedback(UUID eventId, UUID id) {
+        return feedbackRepository.getFeedback(eventId, id);
     }
 
     public List<Feedback> getFeedbackByEvent(UUID eventid) {
@@ -40,6 +40,10 @@ public class FeedbackService {
         feedbackRepository.insertFeedback(feedback);
         setSentiment(feedback.getId(), feedback.getFeedback());
         return feedback;
+    }
+
+    public void deleteFeedback(UUID eventId, UUID id){
+        feedbackRepository.deleteFeedback(eventId, id);
     }
 
 
@@ -61,6 +65,9 @@ public class FeedbackService {
 
     }
 
+
+
+    // HF returns the results in a weird format, this processes it into a simple map
     public Map<String, Double> getSentiment(String feedback) {
 
         WebClient webClient = WebClient.builder()

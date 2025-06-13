@@ -29,12 +29,13 @@ public class FeedbackRepository {
                 .build();
     }
 
-    public Feedback getFeedback(UUID id) {
-        String sql = "SELECT * FROM event_feedback WHERE ID = ?";
+    public Feedback getFeedback(UUID eventId, UUID id) {
+        String sql = "SELECT * FROM event_feedback WHERE ID = ? AND EVENT = ?";
         Feedback feedback = jdbcTemplate.queryForObject(
                 sql,
                 feedbackRowMapper(),
-                id
+                id,
+                eventId
         );
         return feedback;
     }
@@ -72,6 +73,15 @@ public class FeedbackRepository {
                 neutral,
                 negative,
                 id
+        );
+    }
+
+    public void deleteFeedback(UUID eventId,UUID id) {
+        String sql = "DELETE FROM event_feedback WHERE ID = ? AND EVENT = ?";
+        jdbcTemplate.update(
+                sql,
+                id,
+                eventId
         );
     }
 
