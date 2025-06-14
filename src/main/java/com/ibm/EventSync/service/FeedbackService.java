@@ -35,7 +35,6 @@ public class FeedbackService {
 
     // In a perfect world, setSentiment is run async to this, but should be fine for this demo
     public Feedback addFeedback(UUID id, FeedbackDTO feedbackDto) {
-        System.out.println(feedbackDto);
         Feedback feedback = Feedback.builder()
                 .id(UUID.randomUUID())
                 .event(id)
@@ -44,7 +43,7 @@ public class FeedbackService {
                 .build();
         feedbackRepository.insertFeedback(feedback);
         setSentiment(feedback.getId(), feedback.getFeedback());
-        return feedback;
+        return getFeedback(id,feedback.getId());
     }
 
     public void deleteFeedback(UUID eventId, UUID id) {

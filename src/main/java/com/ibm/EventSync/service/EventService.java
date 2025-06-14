@@ -28,7 +28,7 @@ public class EventService {
                 .description(eventDto.getDescription())
                 .build();
         eventRepository.insertEvent(event);
-        return event;
+        return getEvent(event.getId());
     }
 
     public Event updateEvent(UUID id, EventDTO eventDto) {
