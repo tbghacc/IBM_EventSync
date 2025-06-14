@@ -79,11 +79,14 @@ public class EventService {
         // In that situation it's probably more right to assume that the sentiment is more neutral
         double weightedSentiment = (positive * 2) + neutral;
 
+
+        // The weighted sentiment is a value between 0 and 200, so I just used /3 as the limits
         String ws = weightedSentiment <= 67 ? "Negative" :
                 weightedSentiment <= 134 ? "Neutral" : "Positive";
 
         // Dominant sentiment is seperated for ease of use
         Sentiment sentiment = Sentiment.builder()
+                .feedback_amount(eventFeedback.size())
                 .dominant_sentiment(ds)
                 .weighted_sentiment(ws)
                 .positive(positive)

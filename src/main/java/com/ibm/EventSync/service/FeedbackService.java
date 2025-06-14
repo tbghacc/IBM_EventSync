@@ -35,10 +35,11 @@ public class FeedbackService {
 
     // In a perfect world, setSentiment is run async to this, but should be fine for this demo
     public Feedback addFeedback(UUID id, FeedbackDTO feedbackDto) {
+        System.out.println(feedbackDto);
         Feedback feedback = Feedback.builder()
                 .id(UUID.randomUUID())
                 .event(id)
-                .submitter(feedbackDto.getSubmitter())
+                .submitter(feedbackDto.getSubmitter() != null ? feedbackDto.getSubmitter() : "Anonymous")
                 .feedback(feedbackDto.getFeedback())
                 .build();
         feedbackRepository.insertFeedback(feedback);
